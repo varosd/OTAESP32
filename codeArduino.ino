@@ -52,32 +52,15 @@ void repeatedCall() {
   }
 }
 
-struct Button {
+struct 
+{
   const uint8_t PIN;
   uint32_t numberKeyPresses;
   bool pressed;
 };
 
-Button button_boot = {
-  0,
-  0,
-  false
-};
-/*void IRAM_ATTR isr(void* arg) {
-    Button* s = static_cast<Button*>(arg);
-    s->numberKeyPresses += 1;
-    s->pressed = true;
-}*/
-
-void IRAM_ATTR isr() {
-  button_boot.numberKeyPresses += 1;
-  button_boot.pressed = true;
-}
-
 
 void setup() {
-  pinMode(button_boot.PIN, INPUT);
-  attachInterrupt(button_boot.PIN, isr, RISING);
   Serial.begin(115200);
   Serial.print("Active firmware version:");
   Serial.println(FirmwareVer);
@@ -85,12 +68,10 @@ void setup() {
   connect_wifi();
 }
 void loop() {
-  if (button_boot.pressed) { //to connect wifi via Android esp touch app 
-    Serial.println("Firmware update Starting..");
-    firmwareUpdate();
-    button_boot.pressed = false;
-  }
+ 
   repeatedCall();
+  
+  delay(1000);
 }
 
 void connect_wifi() {
